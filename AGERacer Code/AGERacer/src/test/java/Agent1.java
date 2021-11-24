@@ -28,11 +28,11 @@ public class Agent1 {
 
             Point current = new Point(x, y);
             //MODIFICAR
-            int thrust = 80;
+int thrust = 50;
             //MODIFICAR
-            if(targ.distance(current) < 2000 ){
+if(targ.distance(current) < 50 ){
                 //MODIFICAR
-			thrust = 80;
+thrust = 50;
             }
             System.out.println(targ.x+ " " + targ.y + " " + thrust + " Agent 1"); // X Y THRUST MESSAGE
         }

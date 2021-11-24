@@ -1,4 +1,4 @@
-      
+import os   
 import os.path, subprocess
 from subprocess import STDOUT, PIPE
 
@@ -20,7 +20,7 @@ class JavaParser:
         # Cambiar las lineas 
         data = self.obtenerDatosFicheroModificado(thrust, brakeDist, brakeThrust)
         # Escribir lineas
-        overwriteDataInFile(data)
+        self.overwriteDataInFile(data)
         
     def obtenerDatosFicheroModificado(self, thrust, brakeDist, brakeThrust):
         with open(self.nombreFichero, 'r') as file:
@@ -39,10 +39,12 @@ class JavaParser:
     def correrJava(self, thrust, brakeDist, brakeThrust):
         self.modificarJava(thrust, brakeDist, brakeThrust)
         self.compilarJava()
-        self.ejecutarSkeleton()
+        #self.ejecutarSkeleton()
 
     def compilarJava(self):
-        subprocess.check_call(['javac', self.nombreFichero])
+        directory = os.getcwd()
+        directory = directory.replace('\\', '/')
+        os.system('apache-ant-1.10.12/bin/ant')
 
 
     def ejecutarSkeleton(self):
@@ -54,4 +56,8 @@ class JavaParser:
 
 
 if __name__ == "__main__":
+    nombreFichero = 'AGERacer Code/AGERacer/src/test/java/Agent1.java'
+    myJavaParser = JavaParser(nombreFichero)
+    thrust, brakeDist, brakeThrust = 50, 50, 50
+    myJavaParser.correrJava(thrust, brakeDist, brakeThrust)
     print("Run the file desafioFinal!")
