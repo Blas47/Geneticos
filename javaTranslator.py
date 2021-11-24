@@ -52,7 +52,12 @@ class JavaParser:
         os.chdir('AGERacer Code/AGERacer')
         print(os.getcwd())
         print('COMPILANDOOO')
-        subprocess.run(['mvn', 'compile'])
+        #esta linea es como se ejectuta
+        #no se cual es es path del DEXEC.mainClas
+        #he usado esta web https://www.baeldung.com/maven-java-main-method
+        subprocess.run(['mvn','-e', 'compile','exec:java','-Dexec.mainClass="test.SkeletonMain.main.Exec"'])
+
+
         print('COMPILADO')
         #subprocess.run(['java','SkeletonMain'])
         """
