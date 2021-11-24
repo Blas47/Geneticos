@@ -42,16 +42,22 @@ class JavaParser:
         self.ejecutarSkeleton()
 
     def compilarJava(self):
-        subprocess.check_call(['javac', self.nombreFichero])
+        subprocess.run(['javac', self.nombreFichero])
 
 
     def ejecutarSkeleton(self):
+        subprocess.run(['javac', '/Users/nachoblascoalis/Documents/Geneticos/AGERacer Code/AGERacer/src/test/java/SkeletonMain.java'])
+        subprocess.run(['java','SkeletonMain'])
+        """
         cmd=['java', self.nombreFichero]
         proc=subprocess.Popen(cmd, stdout = PIPE, stderr = STDOUT)
         #input
         subprocess.Popen(cmd, stdin = PIPE)
         print(proc.stdout.read())
-
+        """
 
 if __name__ == "__main__":
     print("Run the file desafioFinal!")
+    parser = JavaParser('/Users/nachoblascoalis/Documents/Geneticos/AGERacer Code/AGERacer/src/test/java/Agent1.java')
+    parser.compilarJava()
+    parser.ejecutarSkeleton()
