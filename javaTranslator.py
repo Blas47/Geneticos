@@ -43,11 +43,18 @@ class JavaParser:
 
     def compilarJava(self):
         subprocess.run(['javac', self.nombreFichero])
+        print('Agente compilado')
 
 
     def ejecutarSkeleton(self):
-        subprocess.run(['javac', '/Users/nachoblascoalis/Documents/Geneticos/AGERacer Code/AGERacer/src/test/java/SkeletonMain.java'])
-        subprocess.run(['java','SkeletonMain'])
+        #ir al directorio donde este el pom.xml
+        print('CAMBIANDO DIRECTORIO')
+        os.chdir('AGERacer Code/AGERacer')
+        print(os.getcwd())
+        print('COMPILANDOOO')
+        subprocess.run(['mvn', 'compile'])
+        print('COMPILADO')
+        #subprocess.run(['java','SkeletonMain'])
         """
         cmd=['java', self.nombreFichero]
         proc=subprocess.Popen(cmd, stdout = PIPE, stderr = STDOUT)
