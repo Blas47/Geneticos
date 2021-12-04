@@ -20,6 +20,7 @@ public class Individual {
         for( int i = 0; i < this.values.length; i++){
             this.values[i] += r.nextGaussian() * this.variances[i];
         }
+
         changeFile(this.values);
         this.fit = obtainFit();
     }
@@ -32,9 +33,12 @@ public class Individual {
 
         // Set random values.
         for (int i = 0; i < sizeIndividual; i++) {
-            this.values[i] = Math.random() * 18359;
+            this.values[i] = Math.random() * 150;
             this.variances[i] = Math.random() * 2500;
         }
+
+        changeFile(this.values);
+        this.fit = obtainFit();
     }
 
     // Function to change the file of the agent.

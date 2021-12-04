@@ -1,5 +1,4 @@
 import java.io.File;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -7,8 +6,15 @@ public class Agent1 {
     public static ArrayList<Double> getParams() throws java.io.FileNotFoundException{
         ArrayList <Double> values = new ArrayList<>();
 
-        File file = new File("config/conduccion.txt");
+        File file = new File("/Users/nachoblascoalis/Downloads/AGERacer Code-3/AGERacer/config/conduccion.txt");
         Scanner myReader = new Scanner(file);
+
+        while (myReader.hasNextLine()) {
+            String data = myReader.nextLine();
+            values.add(Double.parseDouble(data));
+        }
+
+        myReader.close();
 
         return values;
     }
