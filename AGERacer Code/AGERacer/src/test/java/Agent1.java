@@ -1,7 +1,18 @@
+import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Agent1 {
+    public static ArrayList<Double> getParams() throws java.io.FileNotFoundException{
+        ArrayList <Double> values = new ArrayList<>();
+
+        File file = new File("config/conduccion.txt");
+        Scanner myReader = new Scanner(file);
+
+        return values;
+    }
+
     // This agent slows down from 200 to 50 when is at 4000 units before reaching the checkpoint
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -24,17 +35,25 @@ public class Agent1 {
             int y = Integer.parseInt(input[2]);
             int vx = Integer.parseInt(input[3]);
             int vy = Integer.parseInt(input[4]);
-            Point targ = targets.get(target);
 
+            Point targ = targets.get(target);
+            ArrayList<Double> values = new ArrayList<>();
             Point current = new Point(x, y);
-            // Change value.
-            int thrust = 200;
-            // Change value.
-            if(targ.distance(current) < 50){
-                // Change value.
-                thrust = 100;
+            try {
+                values = getParams();
+            } catch (java.io.FileNotFoundException e) {
+
             }
-            System.out.println(10000+ " " + 4000 + " " + thrust + " Agent 1"); // X Y THRUST MESSAGE
+
+            if (!values.isEmpty()) {
+                double value = values.get(0);
+                int thrust = (int) value;
+                if (targ.distance(current) < values.get(1)) {
+                    value = values.get(2);
+                    thrust = (int) value;
+                }
+                System.out.println(targ.x + " " + targ.y + " " + thrust + " Agent 1"); // X Y THRUST MESSAGE
+            }
         }
     }
 
