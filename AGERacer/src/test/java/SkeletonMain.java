@@ -7,6 +7,10 @@ import java.io.FileNotFoundException;
 public class SkeletonMain {
 
     public static void main(String[] args) {
+        // Parámetros del algoritmo.
+        int WINDOW_IMPROVEMENTS = 3;
+        double C = 0.817;
+
         // Vaciar fichero relacionado con la información del algoritmo.
         try {
             File file = new File("config/log.txt");
@@ -16,10 +20,9 @@ public class SkeletonMain {
             System.out.println(e);
         }
         
-
-        int WINDOW_IMPROVEMENTS = 1;
-        double C = 0.817;
+        // Ejecutar algoritmo.
         Genetic example = new Genetic(WINDOW_IMPROVEMENTS, C);
-        example.run();
+        Individual best = example.run();
+        System.out.println("MEJOR FIT OBTENIDO: " + best.fit);
     }
 }

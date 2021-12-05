@@ -55,7 +55,7 @@ public class Individual {
     public String toString(){
         return  "Values: " + Arrays.toString(this.values)+ "\n" +
                 "Variances: " + Arrays.toString(this.variances) + "\n" +
-                "Fit: " + this.fit + "\n---------------------------------------------------------------------\n";  
+                "Fit: " + this.fit + "\n-----------------------------------------------------------------------\n";  
        }  
 
     // Function to obtain the fit of the individual compiling the game.
@@ -74,7 +74,9 @@ public class Individual {
         GameResult sim = gameRunner.simulate();
 
         // Get result from the output.
+        String [] output = sim.metadata.split(":\"")[1].split("\"}");
         String res = sim.metadata.split(":\"")[1].split("\"}")[0];
+        System.out.println(sim.metadata);
 
         // Transform the result to a double number.
         double result = Double.parseDouble(res);
