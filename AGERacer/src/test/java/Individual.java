@@ -3,6 +3,7 @@ import com.codingame.gameengine.runner.dto.GameResult;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Arrays;
 
 public class Individual {
     // Parameters of an individual.
@@ -19,13 +20,14 @@ public class Individual {
         Random r = new Random();
         for( int i = 0; i < this.values.length; i++){
             this.values[i] += r.nextGaussian() * this.variances[i];
+            this.values[i] = Math.abs(this.values[i]);
         }
 
         changeFile(this.values);
         this.fit = obtainFit();
     }
 
-    // Initialize the individual with random numbers either in the values and variances.
+    // Initialize the individual with random numbers both in the values and variances.
     public Individual(int sizeIndividual) {
         // Initialize the arrays.
         this.values = new double[sizeIndividual];
@@ -33,7 +35,7 @@ public class Individual {
 
         // Set random values.
         for (int i = 0; i < sizeIndividual; i++) {
-            this.values[i] = Math.random() * 150;
+            this.values[i] = Math.abs(Math.random() * 150);
             this.variances[i] = Math.random() * 2500;
         }
 
@@ -49,6 +51,12 @@ public class Individual {
             handler.changeFile();
         } catch(java.io.IOException e){}
     }
+    //Override to strin method
+    public String toString(){
+        return  "Values: " + Arrays.toString(this.values)+ "\n" +
+                "Variances: " + Arrays.toString(this.variances) + "\n" +
+                "Fit: " + this.fit + "\n---------------------------------------------------------------------\n";  
+       }  
 
     // Function to obtain the fit of the individual compiling the game.
     public double obtainFit() {

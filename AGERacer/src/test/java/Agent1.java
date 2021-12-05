@@ -5,10 +5,10 @@ import java.util.Scanner;
 public class Agent1 {
     public static ArrayList<Double> getParams() throws java.io.FileNotFoundException{
         ArrayList <Double> values = new ArrayList<>();
-
-        File file = new File("/Users/nachoblascoalis/Downloads/AGERacer Code-3/AGERacer/config/conduccion.txt");
+        //leer el fichereo donde estan guardados los  valores esenciales para el estilo de conducción del agente
+        File file = new File("config/conduccion.txt");
         Scanner myReader = new Scanner(file);
-
+        //guardar en una lista los valores 
         while (myReader.hasNextLine()) {
             String data = myReader.nextLine();
             values.add(Double.parseDouble(data));
@@ -19,7 +19,7 @@ public class Agent1 {
         return values;
     }
 
-    // This agent slows down from 200 to 50 when is at 4000 units before reaching the checkpoint
+    // El agente tiene dos velocidades entre las que elige según la distancia a la que esté del siguiente punto
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int checkpoints = Integer.parseInt(scanner.nextLine());
@@ -42,22 +42,35 @@ public class Agent1 {
             int vx = Integer.parseInt(input[3]);
             int vy = Integer.parseInt(input[4]);
 
+            // Obtener próximo punto
             Point targ = targets.get(target);
+            // Array para los valores
             ArrayList<Double> values = new ArrayList<>();
+            // Obtener posicion actual
             Point current = new Point(x, y);
+
+            // Leer los valores escritos en el fichero
             try {
                 values = getParams();
             } catch (java.io.FileNotFoundException e) {
 
             }
 
+            // Si se leen correctamente los valores enviar las instrucciones
             if (!values.isEmpty()) {
+                // Obtener la la potencia alta
                 double value = values.get(0);
                 int thrust = (int) value;
+
+                // Comprobar la distancia de frenado
                 if (targ.distance(current) < values.get(1)) {
+                    // Obtener potencia de frenado
                     value = values.get(2);
                     thrust = (int) value;
                 }
+                // Forzar que la potencia sea menor que 200 con el módulo
+                thrust = thrust % 200;
+                // Mandar las instrucciones
                 System.out.println(targ.x + " " + targ.y + " " + thrust + " Agent 1"); // X Y THRUST MESSAGE
             }
         }
