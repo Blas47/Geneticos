@@ -8,7 +8,7 @@ public class SkeletonMain {
 
     public static void main(String[] args) {
         // Parámetros del algoritmo.
-        int WINDOW_IMPROVEMENTS = 3;
+        int WINDOW_IMPROVEMENTS = 10;
         double C = 0.817;
 
         // Vaciar fichero relacionado con la información del algoritmo.

@@ -2,13 +2,15 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Agent1 {
+public class Agent2 {
+    // Función para obtener los valores del fichero.
     public static ArrayList<Double> getParams() throws java.io.FileNotFoundException{
         ArrayList <Double> values = new ArrayList<>();
-        //leer el fichereo donde estan guardados los  valores esenciales para el estilo de conducción del agente
+        // Leer el fichereo donde estan guardados los  valores esenciales para el estilo de conducción del agente.
         File file = new File("config/conduccion.txt");
         Scanner myReader = new Scanner(file);
-        //guardar en una lista los valores 
+        
+        // Guardar en una lista los valores.
         while (myReader.hasNextLine()) {
             String data = myReader.nextLine();
             values.add(Double.parseDouble(data));
@@ -19,42 +21,76 @@ public class Agent1 {
         return values;
     }
 
-    // El agente tiene dos velocidades entre las que elige según la distancia a la que esté del siguiente punto
+    // Función para obtener la distancia entre dos puntos.
+    public static double distance (Point p1, Point p2) {
+            return Math.sqrt(Math.pow((p1.x - p2.x), 2) + Math.pow((p1.y - p2.y), 2));
+    }
+        
+    /*
+        Función para obtener el ángulo entre la posición actual y los dos siguientes puntos.
+        Punto 1 (P1): vértice del triángulo (punto objetivo).
+        Punto 2 (P2): posición actual de la nave.
+        Punto 3 (P3): punto siguiente al objetivo actual.
+    */
+    public static double obtainAngle (Point current, Point targ, Point next_targ) {
+        double distance_1_2 = distance(targ, current);
+        double distance_1_3 = distance(targ, next_targ);
+        double distance_2_3 = distance(current, next_targ);
+
+        double angle = ((Math.pow(distance_1_2, 2) + Math.pow(distance_1_3, 2) - Math.pow(distance_2_3, 2)) 
+                    / (2 * distance_1_2 * distance_1_3));
+        
+        angle = Math.toDegrees(Math.acos(angle));
+
+        return angle;
+    }
+    
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int checkpoints = Integer.parseInt(scanner.nextLine());
+
+        // Puntos por los que tiene que pasar el agente.
         ArrayList<Point> targets = new ArrayList<>();
         for(int i = 0; i < checkpoints; i++){
             String[] line = scanner.nextLine().split(" ");
             System.err.println(line[0] + " " + line[1]);
             targets.add(new Point(Integer.parseInt(line[0]), Integer.parseInt(line[1])));
         }
-        double dist = 100000.0;
-        int z = 0;
+
+        // Obtener valores que definen el agente.
+        ArrayList<Double> values = new ArrayList<>();
+        try {
+            values = getParams();
+        } catch (java.io.FileNotFoundException e) {}
+
+        // Bucle del recorrido.
         while (true) {
+            // Obtener parámetros del turno.
             String s = scanner.nextLine();
             System.err.println(s);
             String[] input = s.split(" ");
-            // id x y vx vy angle
+            
             int target = Integer.parseInt(input[0]);
             int x = Integer.parseInt(input[1]);
             int y = Integer.parseInt(input[2]);
             int vx = Integer.parseInt(input[3]);
             int vy = Integer.parseInt(input[4]);
+            int angle = Integer.parseInt(input[5]);
 
-            // Obtener próximo punto
+            // Obtener objetivo y el punto siguiente a éste.
             Point targ = targets.get(target);
-            // Array para los valores
-            ArrayList<Double> values = new ArrayList<>();
-            // Obtener posicion actual
-            Point current = new Point(x, y);
-
-            // Leer los valores escritos en el fichero
-            try {
-                values = getParams();
-            } catch (java.io.FileNotFoundException e) {
-
+            Point next_targ;
+            if (!targ.equals(targets.get(targets.size() - 1))) {
+                 next_targ = targets.get(target + 1);
+            } else {
+                next_targ = targets.get(0);
             }
+
+            // Obtener posicion actual.
+            Point current = new Point(x, y);
+            
+            double angleCircuit = obtainAngle(current, targ, next_targ);
+
 
             // Si se leen correctamente los valores enviar las instrucciones
             if (!values.isEmpty()) {
@@ -71,7 +107,7 @@ public class Agent1 {
                 // Forzar que la potencia sea menor que 200 con el módulo
                 thrust = thrust % 200;
                 // Mandar las instrucciones
-                System.out.println(targ.x + " " + targ.y + " " + thrust + " Agent 1"); // X Y THRUST MESSAGE
+                System.out.println(targ.x + " " + targ.y + " " + thrust + " anguloTotal " + angle + " anguloCircuito " + angleCircuit); // X Y THRUST MESSAGE
             }
         }
     }

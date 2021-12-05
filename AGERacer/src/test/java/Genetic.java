@@ -80,9 +80,9 @@ public class Genetic {
         Individual father = new Individual(3);
 
         // Ejecutar el algoritmo para n generaciones.
-        while(this.generations < 10) {
+        while(this.generations < 30) {
             Individual child = new Individual (father.values, father.variances);
-            
+
             if (child.fit < father.fit) {
                 this.history[(this.generations%this.history.length)] = true;
                 father = child;
@@ -91,13 +91,16 @@ public class Genetic {
             }
             
             father = rule1_5(father);
+
             this.generations++;
+
             logInformation(father);
-            
         }
+
         long endTime   = System.nanoTime();
         this.executionTime = endTime - startTime;
         logResult(father);
+
         return father;
     }
 }

@@ -36,7 +36,7 @@ public class Individual {
         // Set random values.
         for (int i = 0; i < sizeIndividual; i++) {
             this.values[i] = Math.abs(Math.random() * 150);
-            this.variances[i] = Math.random() * 2500;
+            this.variances[i] = Math.random() * 200;
         }
 
         changeFile(this.values);
@@ -74,9 +74,7 @@ public class Individual {
         GameResult sim = gameRunner.simulate();
 
         // Get result from the output.
-        String [] output = sim.metadata.split(":\"")[1].split("\"}");
         String res = sim.metadata.split(":\"")[1].split("\"}")[0];
-        System.out.println(sim.metadata);
 
         // Transform the result to a double number.
         double result = Double.parseDouble(res);
