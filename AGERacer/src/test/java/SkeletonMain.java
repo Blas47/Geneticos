@@ -12,11 +12,11 @@ public class SkeletonMain {
 
     public static void main(String[] args) {
         // Número de experimentos que se pretenden realizar.
-        int nExperiment = 10;
+        int nExperiment = 2;
 
         // Veces que queremos correr los experimentos para evitar minimos locales
-
         int nVeces = 1;
+
         // Parámetros del algoritmo.
         int windowImprovements = 5;
         int minVarianza = 0;
@@ -25,25 +25,22 @@ public class SkeletonMain {
         double umbral = 0.001;
         double bestFit = 1000;
         
-        double fit = runExperiment(0, windowImprovements, c, umbral, minVarianza, maxVarianza);
-        System.out.println("MEJOR FIT OBTENIDO DE TODOS LOS EXPERIMENTOS: " + bestFit);
-        
-        // for(int j = 0; j= nVeces; j++) {
-        //     // Ejecutar experimentos.
-        //     for (int i = 0; i < nExperiment; i++) {
+        for (int j = 0; j < nVeces; j++) {
+            // Ejecutar experimentos.
+            for (int i = 0; i < nExperiment; i++) {
                 
-        //         double fit = runExperiment(i, windowImprovements, c, umbral, minVarianza, maxVarianza);
-        //         bestFit = fit<bestFit?fit:bestFit;
+                double fit = runExperiment(i, windowImprovements, c, umbral, minVarianza, maxVarianza);
+                bestFit = fit<bestFit?fit:bestFit;
                 
-        //     }
+            }
 
-        //     System.out.println("MEJOR FIT OBTENIDO DE TODOS LOS EXPERIMENTOS: " + bestFit);
-        // }
+            System.out.println("MEJOR FIT OBTENIDO DE TODOS LOS EXPERIMENTOS: " + bestFit);
+        }
         
     }
 
     private static double runExperiment(int nExperiment, int windowImprovements, double c, double umbral, int minVarianza, int maxVarianza) {
-        System.out.println("Corriendo experimento: " + nExperiment);
+        //System.out.println("Corriendo experimento: " + nExperiment);
         // Vaciar fichero relacionado con la información del algoritmo.
         try {
             File file = new File("config/log.txt");
