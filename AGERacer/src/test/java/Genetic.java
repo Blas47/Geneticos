@@ -8,15 +8,20 @@ import java.util.Arrays;
 
 public class Genetic {
     public boolean [] history;
-    public int generations;
-    public double c, executionTime;
+    public int generations, ventanaExitos, minVarianza, maxVarianza;
+    public double c, umbral, executionTime;
     
     // Constructor con los parámetros más relevantes del algoritmo genético.
-    public Genetic(int windowImprovements, double c) {
-        this.history = new boolean[windowImprovements];
+    public Genetic( int ventanaExitos, double c, double umbral, int minVarianza, int maxVarianza) {
+        this.history = new boolean[ventanaExitos];
+        this.ventanaExitos = ventanaExitos;
+        this.c = c;
+        this.umbral = umbral;
+        this.minVarianza = minVarianza;
+        this.maxVarianza = maxVarianza;
+
         this.generations = 0;
         this.executionTime = 0;
-        this.c = c;
     }
     
     // Regla de 1/5 para modificar las varianzas del individuo.
@@ -66,26 +71,21 @@ public class Genetic {
         
         try{
             FileWriter myWriter = new FileWriter(file, true);
-            myWriter.write("\n" + this.executionTime + "," + this.generations + "," + this.history.length 
-                                + "," + this.c + "," + Arrays.toString(best.values) + ","
-                                + Arrays.toString(best.variances) + "," + best.fit);
+            myWriter.write("\n" + this.history.length + "," + this.c + "," + this.umbral + "," + this.minVarianza
+                            + "," + this.maxVarianza + "," + this.executionTime + "," + this.generations + ","
+                            + Arrays.toString(best.values) + "," + Arrays.toString(best.variances) + "," + best.fit);
             myWriter.close();
         } catch (Exception e) {}
     }
 
-    public Individual run(int agent) {
+    public Individual run(int agent, int intervalos) {
         // Obtener longitud del vector de valores del algoritmo.
-        int size = 0;
-        switch (agent) {
-            case 1: size = 3;
-            break;
-            case 2: size = 12;
-        }
+        int size = intervalos * 3;
 
         long startTime = System.nanoTime();
 
         // Inicializar al primer individuo.
-        Individual father = new Individual(size, agent);
+        Individual father = new Individual(size, agent, this.minVarianza, this.maxVarianza);
 
         // Ejecutar el algoritmo para n generaciones.
         while(this.generations < 20) {

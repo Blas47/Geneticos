@@ -25,7 +25,7 @@ public class Agent2 {
 
         myReader.close();
         Arrays.sort(values, Comparator.comparingDouble(o -> o[0]));
-        
+
         return values;
     }
 
@@ -109,7 +109,7 @@ public class Agent2 {
                 // Decidir la distancia de frenado y velocidad segun angulo.
                 for (int i = 0; i < values.length; i++) {
                     // Comprobar el angulo.
-                    if (angleCircuit < values[i][0]) {
+                    if ((angleCircuit%181)< values[i][0]) {
                         // Comprobar la distancia de frenado.
                         if (targ.distance(current) < values[i][1]) {
                             // Obtener potencia de frenado.

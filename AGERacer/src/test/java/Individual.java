@@ -34,15 +34,17 @@ public class Individual {
     }
 
     // Initialize the individual with random numbers both in the values and variances.
-    public Individual(int sizeIndividual, int agente) {
+    public Individual(int sizeIndividual, int agente, int minVarianza, int maxVarianza) {
         // Initialize the arrays.
+        
         this.values = new double[sizeIndividual];
         this.variances = new double[sizeIndividual];
 
         // Set random values.
         for (int i = 0; i < sizeIndividual; i++) {
             this.values[i] = Math.abs(Math.random() * 9000);
-            this.variances[i] = Math.random() * 200;
+            //Math.random()*6 + 1   // Esto da valores entre 1.0 y 7.0 excluido el 7.0
+            this.variances[i] = Math.random() * maxVarianza + minVarianza;
         }
 
         changeFile(this.values, agente);
@@ -68,7 +70,7 @@ public class Individual {
     }
     
     //Override to strin method
-    public String toString(){
+    public String toString() {
         return  "Values: " + Arrays.toString(this.values)+ "\n" +
                 "Variances: " + Arrays.toString(this.variances) + "\n" +
                 "Fit: " + this.fit + "\n-----------------------------------------------------------------------\n";  
@@ -76,9 +78,9 @@ public class Individual {
 
     // Function to obtain the fit of the individual compiling the game.
     public double obtainFit(int agente) {
-        int files = 7;
+        int maps = 7;
         double result = 0;
-        for (int i = 0; i < files; i++) {
+        for (int i = 0; i < maps; i++) {
             // Compile the game.
             SoloGameRunner gameRunner = new SoloGameRunner();
             
@@ -102,7 +104,7 @@ public class Individual {
             result += Double.parseDouble(res);
         }
 
-        return result/files;
+        return result/maps;
     }
 
 }
