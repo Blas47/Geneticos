@@ -13,8 +13,8 @@ public class Individual {
     // Initialize a new individual in relation to the values of the father.
     public Individual (double [] values, double[] variances, int agente) {
         // Same variances.
-        this.variances = variances;
-        this.values = values;
+        this.values = Arrays.copyOf(values, values.length);
+        this.variances = Arrays.copyOf(variances, variances.length);
 
         // Set new values.
         Random r = new Random();
@@ -25,6 +25,12 @@ public class Individual {
 
         changeFile(this.values, agente);
         this.fit = obtainFit(agente);
+    }
+
+    public Individual (Individual child) {
+        this.values = Arrays.copyOf(child.values, child.values.length);
+        this.variances = Arrays.copyOf(child.variances, child.variances.length);
+        this.fit = child.fit;
     }
 
     // Initialize the individual with random numbers both in the values and variances.

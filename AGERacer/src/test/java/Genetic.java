@@ -93,7 +93,7 @@ public class Genetic {
 
             if (child.fit < father.fit) {
                 this.history[(this.generations%this.history.length)] = true;
-                father = child;
+                father = new Individual(child);
             } else {
                 this.history[(this.generations%this.history.length)] = false;
             }
