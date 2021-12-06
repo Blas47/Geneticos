@@ -11,7 +11,7 @@ public class Individual {
     public double fit;
 
     // Initialize a new individual in relation to the values of the father.
-    public Individual (double [] values, double[] variances) {
+    public Individual (double [] values, double[] variances, int agente) {
         // Same variances.
         this.variances = variances;
         this.values = values;
@@ -23,12 +23,12 @@ public class Individual {
             this.values[i] = Math.abs(this.values[i]);
         }
 
-        changeFile(this.values);
-        this.fit = obtainFit();
+        changeFile(this.values, agente);
+        this.fit = obtainFit(agente);
     }
 
     // Initialize the individual with random numbers both in the values and variances.
-    public Individual(int sizeIndividual) {
+    public Individual(int sizeIndividual, int agente) {
         // Initialize the arrays.
         this.values = new double[sizeIndividual];
         this.variances = new double[sizeIndividual];
@@ -39,18 +39,28 @@ public class Individual {
             this.variances[i] = Math.random() * 200;
         }
 
-        changeFile(this.values);
-        this.fit = obtainFit();
+        changeFile(this.values, agente);
+        this.fit = obtainFit(agente);
     }
 
     // Function to change the file of the agent.
-    public void changeFile(double[] values) {
-        // Change file with the desired values.
-        FileHandler handler = new FileHandler(values);
-        try {
-            handler.changeFile();
-        } catch(java.io.IOException e){}
+    public void changeFile(double[] values, int agente) {
+        switch (agente) {
+                case 1: FileHandler1 handler1 = new FileHandler1(values);
+                // Change file with the desired values.
+                try {
+                    handler1.changeFile();
+                } catch(java.io.IOException e){}
+                break;
+                case 2: FileHandler2 handler2 = new FileHandler2(values);
+                // Change file with the desired values.
+                try {
+                    handler2.changeFile();
+                } catch(java.io.IOException e){}
+                break;
+            }
     }
+    
     //Override to strin method
     public String toString(){
         return  "Values: " + Arrays.toString(this.values)+ "\n" +
@@ -59,27 +69,33 @@ public class Individual {
        }  
 
     // Function to obtain the fit of the individual compiling the game.
-    public double obtainFit() {
-        // Compile the game.
-        SoloGameRunner gameRunner = new SoloGameRunner();
+    public double obtainFit(int agente) {
+        double result = 0;
+        for (int i = 0; i < 7; i++) {
+            // Compile the game.
+            SoloGameRunner gameRunner = new SoloGameRunner();
+            
+            switch (agente){
+                case 1: gameRunner.setAgent(Agent1.class);
+                break;
+                case 2: gameRunner.setAgent(Agent2.class);
+                break;
+            }
 
-        // Set the player.
-        gameRunner.setAgent(Agent1.class);
-        //gameRunner.addAgent(Agent1.class);
+            // Set a test case.
+            gameRunner.setTestCase("test"+i+".json");
 
-        // Set a test case.
-        gameRunner.setTestCase("test0.json");
+            // Simulate the game.
+            GameResult sim = gameRunner.simulate();
 
-        // Simulate the game.
-        GameResult sim = gameRunner.simulate();
+            // Get result from the output.
+            String res = sim.metadata.split(":\"")[1].split("\"}")[0];
 
-        // Get result from the output.
-        String res = sim.metadata.split(":\"")[1].split("\"}")[0];
+            // Transform the result to a double number.
+            result += Double.parseDouble(res);
+        }
 
-        // Transform the result to a double number.
-        double result = Double.parseDouble(res);
-
-        return result;
+        return result/7;
     }
 
 }

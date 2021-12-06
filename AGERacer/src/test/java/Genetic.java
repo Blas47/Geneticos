@@ -1,5 +1,6 @@
 import com.codingame.gameengine.runner.SoloGameRunner;
 import com.codingame.gameengine.runner.dto.GameResult;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.FileNotFoundException;
@@ -72,16 +73,22 @@ public class Genetic {
         } catch (Exception e) {}
     }
 
-    public Individual run() {
+    public Individual run(int agent) {
+        int size = 0;
+        switch (agent) {
+            case 1: size = 3;
+            break;
+            case 2: size = 12;
+        }
+
         long startTime = System.nanoTime();
 
-        
         // Inicializar al primer individuo.
-        Individual father = new Individual(3);
+        Individual father = new Individual(size, agent);
 
         // Ejecutar el algoritmo para n generaciones.
         while(this.generations < 30) {
-            Individual child = new Individual (father.values, father.variances);
+            Individual child = new Individual (father.values, father.variances, agent);
 
             if (child.fit < father.fit) {
                 this.history[(this.generations%this.history.length)] = true;

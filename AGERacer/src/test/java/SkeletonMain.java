@@ -1,5 +1,9 @@
+
 import com.codingame.gameengine.runner.SoloGameRunner;
 import com.codingame.gameengine.runner.dto.GameResult;
+
+
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.FileNotFoundException;
@@ -10,6 +14,7 @@ public class SkeletonMain {
         // Parámetros del algoritmo.
         int WINDOW_IMPROVEMENTS = 10;
         double C = 0.817;
+        int agent = 1;
 
         // Vaciar fichero relacionado con la información del algoritmo.
         try {
@@ -22,7 +27,7 @@ public class SkeletonMain {
         
         // Ejecutar algoritmo.
         Genetic example = new Genetic(WINDOW_IMPROVEMENTS, C);
-        Individual best = example.run();
+        Individual best = example.run(agent);
         System.out.println("MEJOR FIT OBTENIDO: " + best.fit);
     }
 }

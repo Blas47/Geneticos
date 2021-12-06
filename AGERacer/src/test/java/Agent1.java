@@ -6,7 +6,7 @@ public class Agent1 {
     public static ArrayList<Double> getParams() throws java.io.FileNotFoundException{
         ArrayList <Double> values = new ArrayList<>();
         //leer el fichereo donde estan guardados los  valores esenciales para el estilo de conducción del agente
-        File file = new File("config/conduccion.txt");
+        File file = new File("config/conduccionAgente1.txt");
         Scanner myReader = new Scanner(file);
         //guardar en una lista los valores 
         while (myReader.hasNextLine()) {
