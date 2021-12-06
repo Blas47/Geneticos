@@ -74,6 +74,7 @@ public class Genetic {
     }
 
     public Individual run(int agent) {
+        // Obtener longitud del vector de valores del algoritmo.
         int size = 0;
         switch (agent) {
             case 1: size = 3;
@@ -87,7 +88,7 @@ public class Genetic {
         Individual father = new Individual(size, agent);
 
         // Ejecutar el algoritmo para n generaciones.
-        while(this.generations < 30) {
+        while(this.generations < 20) {
             Individual child = new Individual (father.values, father.variances, agent);
 
             if (child.fit < father.fit) {

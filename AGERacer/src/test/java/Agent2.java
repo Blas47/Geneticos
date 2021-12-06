@@ -25,6 +25,7 @@ public class Agent2 {
 
         myReader.close();
         Arrays.sort(values, Comparator.comparingDouble(o -> o[0]));
+        
         return values;
     }
 

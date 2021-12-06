@@ -12,9 +12,9 @@ public class SkeletonMain {
 
     public static void main(String[] args) {
         // Parámetros del algoritmo.
-        int WINDOW_IMPROVEMENTS = 10;
+        int WINDOW_IMPROVEMENTS = 5;
         double C = 0.817;
-        int agent = 1;
+        int agent = 2;
 
         // Vaciar fichero relacionado con la información del algoritmo.
         try {

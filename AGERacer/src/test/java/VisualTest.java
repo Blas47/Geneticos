@@ -9,9 +9,9 @@ public class VisualTest {
         /* Solo Game */
         SoloGameRunner gameRunner = new SoloGameRunner();
         // Sets the player
-        gameRunner.setAgent(Agent1.class);
+        gameRunner.setAgent(Agent2.class);
         // Sets a test case
-        gameRunner.setTestCase("test5.json");
+        gameRunner.setTestCase("test7.json");
 
         // Another way to add a player for python
         // gameRunner.addAgent("python3 /home/user/player.py");

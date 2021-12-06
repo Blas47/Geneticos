@@ -35,7 +35,7 @@ public class Individual {
 
         // Set random values.
         for (int i = 0; i < sizeIndividual; i++) {
-            this.values[i] = Math.abs(Math.random() * 150);
+            this.values[i] = Math.abs(Math.random() * 9000);
             this.variances[i] = Math.random() * 200;
         }
 
@@ -70,8 +70,9 @@ public class Individual {
 
     // Function to obtain the fit of the individual compiling the game.
     public double obtainFit(int agente) {
+        int files = 7;
         double result = 0;
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < files; i++) {
             // Compile the game.
             SoloGameRunner gameRunner = new SoloGameRunner();
             
@@ -95,7 +96,7 @@ public class Individual {
             result += Double.parseDouble(res);
         }
 
-        return result/7;
+        return result/files;
     }
 
 }

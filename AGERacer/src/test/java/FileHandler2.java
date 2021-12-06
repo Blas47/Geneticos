@@ -13,7 +13,7 @@ public class FileHandler2 {
         try {
             // Path currentRelativePath = Paths.get("");
             //String s = currentRelativePath.toAbsolutePath().toString();
-            File file = new File("config/conduccionAgente1.txt");
+            File file = new File("config/conduccion.txt");
             FileWriter myWriter = new FileWriter(file, false);
             int counter = 1;
 
