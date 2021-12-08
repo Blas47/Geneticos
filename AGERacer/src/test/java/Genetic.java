@@ -65,19 +65,6 @@ public class Genetic {
         } catch (Exception e) {}
     }
 
-
-    public void logResult (int nExperiment, int nEjecucion, Individual best) {
-        File file = new File("config/results.csv");
-        
-        try{
-            FileWriter myWriter = new FileWriter(file, true);
-            myWriter.write("\n" + "log" + nExperiment + "-" + nEjecucion + ".txt," + this.history.length + "," + this.c + "," 
-                            + this.umbral + "," + this.minVarianza + "," + this.maxVarianza + "," + this.executionTime + "," 
-                            + this.generations + "," + Arrays.toString(best.values) + "," + Arrays.toString(best.variances) + "," + best.fit);
-            myWriter.close();
-        } catch (Exception e) {}
-    }
-
     public boolean condicionParada(Individual father) {
         for (double varianza:father.variances) {
             if (varianza > this.umbral) return false;
@@ -85,7 +72,7 @@ public class Genetic {
         return true;
     }
 
-    public Individual run(int nExperiment, int nEjecucion, int agent, int intervalos) {
+    public Result run(int nExperiment, int nEjecucion, int agent, int intervalos) {
         // Obtener longitud del vector de valores del algoritmo.
         int size = intervalos * 3;
 
@@ -95,8 +82,8 @@ public class Genetic {
         Individual father = new Individual(size, agent, this.minVarianza, this.maxVarianza);
 
         // Ejecutar el algoritmo para n generaciones.
-        // while (!condicionParada(father) && this.generations < 5000) {
-        while (this.generations < 3) {
+        while (!condicionParada(father) && this.generations < 5000) {
+
             Individual child = new Individual (father.values, father.variances, agent);
 
             if (child.fit < father.fit) {
@@ -116,8 +103,8 @@ public class Genetic {
         long endTime   = System.nanoTime();
         this.executionTime = endTime - startTime;
 
-        logResult(nExperiment, nEjecucion, father);
+        Result result = new Result(father, this.executionTime, this.generations, nEjecucion);
 
-        return father;
+        return result;
     }
 }

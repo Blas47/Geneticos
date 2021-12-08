@@ -49,7 +49,7 @@ public class SkeletonMain {
         return experiments;
     }
 
-    private static Individual runExperiment(int nExperiment, int nEjecucion, int windowImprovements, double c, double umbral, int minVarianza, int maxVarianza, int intervalos) {
+    private static Result runExperiment(int nExperiment, int nEjecucion, int windowImprovements, double c, double umbral, int minVarianza, int maxVarianza, int intervalos) {
         // Vaciar fichero relacionado con la información del algoritmo.
         try {
             File file = new File("config/log" + nExperiment + "-" + nEjecucion + ".txt");
@@ -64,11 +64,25 @@ public class SkeletonMain {
 
         // Ejecutar algoritmo.
         Genetic example = new Genetic(windowImprovements, c, umbral, minVarianza, maxVarianza);
-        Individual best = example.run(nExperiment, nEjecucion, agent, intervalos);
+        Result result = example.run(nExperiment, nEjecucion, agent, intervalos);
 
-        System.out.println("MEJOR FIT OBTENIDO: " + best.fit);
+        System.out.println("MEJOR FIT OBTENIDO: " + result.best.fit);
         
-        return best;
+        return result;
+    }
+
+    public static void logResult (int nExperiment, Result result, int windowImprovements, double c, double umbral, int minVarianza, int maxVarianza, int intervalos, double meanFit) {
+        File file = new File("config/results.csv");
+        
+        try{
+            FileWriter myWriter = new FileWriter(file, true);
+            myWriter.write("\n" + nExperiment + "," + "log" + nExperiment + "-" + result.nEjecucion + "," 
+                            + windowImprovements + "," + c + "," + umbral + "," + minVarianza + "," 
+                            + maxVarianza + "," + intervalos + "," + result.executionTime + "," + result.generations 
+                            + "," + Arrays.toString(result.best.values) + "," + Arrays.toString(result.best.variances) 
+                            + "," + meanFit + "," + result.best.fit);
+            myWriter.close();
+        } catch (Exception e) {}
     }
     
     public static void main(String[] args)  {
@@ -84,23 +98,37 @@ public class SkeletonMain {
 
         // Peor valor de fit que se puede obtener.
         double bestFit = 1000;
+        Result bestResult;
+
         for (int j = 0; j < experiments.length; j++) {
             System.out.println("EJECUTANDO El SET" + j + "DE EXPERIMENTOS");
             // Ejecutar experimentos.
             double bestFitExperiment = 1000;
             double meanFit = 0;
+            Result bestResultExperiment = null;
+
             for (int i = 0; i < nVeces; i++) {
                 System.out.println("EJECUTANDO El SET" + j + "DE EXPERIMENTOS POR " + i + " VEZ");
-                Individual best = runExperiment(j, i, (int) experiments[j][0], experiments[j][1], experiments[j][2], (int) experiments[j][3], (int) experiments[j][4], (int) experiments[j][5]);
-                double fit = best.fit;
-                bestFit = fit<bestFit?fit:bestFit;
-                bestFitExperiment = fit<bestFitExperiment?fit:bestFitExperiment;
+                Result result = runExperiment(j, i, (int) experiments[j][0], experiments[j][1], experiments[j][2], (int) experiments[j][3], (int) experiments[j][4], (int) experiments[j][5]);
+                double fit = result.best.fit;
+
+                if (fit < bestFitExperiment){
+                    bestFitExperiment = fit;
+                    bestResultExperiment = result;
+                }
+                if (fit < bestFit){
+                    bestFit = fit;
+                    bestResult = result;
+                }
+                
                 meanFit += fit;
             }
 
             System.out.println("MEJOR FIT OBTENIDO DEl SET" + j + "DE EXPERIMENTOS: " + bestFitExperiment);
             meanFit = (meanFit/nVeces);
             System.out.println("MEDIA FIT OBTENIDO DE ESTE SET" + j + "DE EXPERIMENTOS: " + meanFit);
+
+            logResult(j, bestResultExperiment, (int) experiments[j][0], experiments[j][1], experiments[j][2], (int) experiments[j][3], (int) experiments[j][4], (int) experiments[j][5], meanFit);
         }
         System.out.println("MEJOR FIT OBTENIDO DE TODOS LOS EXPERIMENTOS: " + bestFit);
     }
