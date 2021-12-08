@@ -54,8 +54,8 @@ public class Genetic {
         return father;
     }
 
-    public void logInformation (Individual father) {
-        File file = new File("config/log.txt");
+    public void logInformation (int nExperiment, int nEjecucion, Individual father) {
+        File file = new File("config/log" + nExperiment + "-" + nEjecucion + ".txt");
         
         try{
             FileWriter myWriter = new FileWriter(file, true);
@@ -66,19 +66,26 @@ public class Genetic {
     }
 
 
-    public void logResult (Individual best) {
+    public void logResult (int nExperiment, int nEjecucion, Individual best) {
         File file = new File("config/results.csv");
         
         try{
             FileWriter myWriter = new FileWriter(file, true);
-            myWriter.write("\n" + this.history.length + "," + this.c + "," + this.umbral + "," + this.minVarianza
-                            + "," + this.maxVarianza + "," + this.executionTime + "," + this.generations + ","
-                            + Arrays.toString(best.values) + "," + Arrays.toString(best.variances) + "," + best.fit);
+            myWriter.write("\n" + "log" + nExperiment + "-" + nEjecucion + ".txt," + this.history.length + "," + this.c + "," 
+                            + this.umbral + "," + this.minVarianza + "," + this.maxVarianza + "," + this.executionTime + "," 
+                            + this.generations + "," + Arrays.toString(best.values) + "," + Arrays.toString(best.variances) + "," + best.fit);
             myWriter.close();
         } catch (Exception e) {}
     }
 
-    public Individual run(int agent, int intervalos) {
+    public boolean condicionParada(Individual father) {
+        for (double varianza:father.variances) {
+            if (varianza > this.umbral) return false;
+        }
+        return true;
+    }
+
+    public Individual run(int nExperiment, int nEjecucion, int agent, int intervalos) {
         // Obtener longitud del vector de valores del algoritmo.
         int size = intervalos * 3;
 
@@ -88,7 +95,8 @@ public class Genetic {
         Individual father = new Individual(size, agent, this.minVarianza, this.maxVarianza);
 
         // Ejecutar el algoritmo para n generaciones.
-        while(this.generations < 20) {
+        // while (!condicionParada(father) && this.generations < 5000) {
+        while (this.generations < 3) {
             Individual child = new Individual (father.values, father.variances, agent);
 
             if (child.fit < father.fit) {
@@ -102,12 +110,13 @@ public class Genetic {
 
             this.generations++;
 
-            logInformation(father);
+            logInformation(nExperiment, nEjecucion, father);
         }
 
         long endTime   = System.nanoTime();
         this.executionTime = endTime - startTime;
-        logResult(father);
+
+        logResult(nExperiment, nEjecucion, father);
 
         return father;
     }
