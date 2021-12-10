@@ -11,7 +11,7 @@ public class VisualTest {
         // Sets the player
         gameRunner.setAgent(Agent2.class);
         // Sets a test case
-        gameRunner.setTestCase("test6.json");
+        gameRunner.setTestCase("test9.json");
 
         // Another way to add a player for python
         // gameRunner.addAgent("python3 /home/user/player.py");
