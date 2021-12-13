@@ -91,10 +91,10 @@ public class SkeletonMain {
         double [][] experiments = new double[0][0] ;
         try{
             experiments= getExperiments();
-        }catch(Exception e) {}
+        } catch(Exception e) {}
 
         // Veces que queremos correr los experimentos para evitar mínimos locales.
-        int nVeces = 5;
+        int nVeces = 2;
 
         // Peor valor de fit que se puede obtener.
         double bestFit = 1000;
@@ -112,7 +112,7 @@ public class SkeletonMain {
                 Result result = runExperiment(j, i, (int) experiments[j][0], experiments[j][1], experiments[j][2], (int) experiments[j][3], (int) experiments[j][4], (int) experiments[j][5]);
                 double fit = result.best.fit;
 
-                if (fit < bestFitExperiment){
+                if (fit < bestFitExperiment) {
                     bestFitExperiment = fit;
                     bestResultExperiment = result;
                 }
@@ -124,7 +124,7 @@ public class SkeletonMain {
                 meanFit += fit;
             }
 
-            System.out.println("MEJOR FIT OBTENIDO DEl SET" + j + "DE EXPERIMENTOS: " + bestFitExperiment);
+            System.out.println("MEJOR FIT OBTENIDO DEL SET" + j + "DE EXPERIMENTOS: " + bestFitExperiment);
             meanFit = (meanFit/nVeces);
             System.out.println("MEDIA FIT OBTENIDO DE ESTE SET" + j + "DE EXPERIMENTOS: " + meanFit);
 

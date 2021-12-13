@@ -88,7 +88,10 @@ public class Genetic {
 
             if (child.fit < father.fit) {
                 this.history[(this.generations%this.history.length)] = true;
-                father = new Individual(child);
+                father.values = Arrays.copyOf(child.values, child.values.length);
+                father.variances = Arrays.copyOf(child.variances, child.variances.length);
+                father.fit = child.fit;
+                ////father = new Individual(child);
             } else {
                 this.history[(this.generations%this.history.length)] = false;
             }

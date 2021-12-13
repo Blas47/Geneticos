@@ -10,6 +10,24 @@ public class Individual {
     public double [] values, variances;
     public double fit;
 
+    // Initialize the individual with random numbers both in the values and variances.
+    public Individual(int sizeIndividual, int agente, int minVarianza, int maxVarianza) {
+        // Initialize the arrays.
+        
+        this.values = new double[sizeIndividual];
+        this.variances = new double[sizeIndividual];
+
+        // Set random values.
+        for (int i = 0; i < sizeIndividual; i++) {
+            this.values[i] = Math.abs(Math.random() * 9000);
+            //Math.random()*6 + 1   // Esto da valores entre 1.0 y 7.0 excluido el 7.0
+            this.variances[i] = Math.random() * maxVarianza + minVarianza;
+        }
+
+        changeFile(this.values, agente);
+        this.fit = obtainFit(agente);
+    }
+
     // Initialize a new individual in relation to the values of the father.
     public Individual (double [] values, double[] variances, int agente) {
         // Same variances.
@@ -31,24 +49,6 @@ public class Individual {
         this.values = Arrays.copyOf(child.values, child.values.length);
         this.variances = Arrays.copyOf(child.variances, child.variances.length);
         this.fit = child.fit;
-    }
-
-    // Initialize the individual with random numbers both in the values and variances.
-    public Individual(int sizeIndividual, int agente, int minVarianza, int maxVarianza) {
-        // Initialize the arrays.
-        
-        this.values = new double[sizeIndividual];
-        this.variances = new double[sizeIndividual];
-
-        // Set random values.
-        for (int i = 0; i < sizeIndividual; i++) {
-            this.values[i] = Math.abs(Math.random() * 9000);
-            //Math.random()*6 + 1   // Esto da valores entre 1.0 y 7.0 excluido el 7.0
-            this.variances[i] = Math.random() * maxVarianza + minVarianza;
-        }
-
-        changeFile(this.values, agente);
-        this.fit = obtainFit(agente);
     }
 
     // Function to change the file of the agent.
