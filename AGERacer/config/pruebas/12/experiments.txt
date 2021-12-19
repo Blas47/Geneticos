@@ -1,0 +1,2 @@
+S,C,Umbral,MinVarianza,MaxVarianza,Intervalo
+10,0.817,1,3500,10000,15
