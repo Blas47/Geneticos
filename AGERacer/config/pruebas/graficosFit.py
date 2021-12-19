@@ -6,7 +6,7 @@ color = ['blue', 'orange', 'red']
 
 for f, i in zip(files, range(len(color))):
     grafico = []
-    file = open(f+'/log0-0.txt', "r")
+    file = open('config/pruebas/'+f+'/log0-0.txt', "r")
     file = file.readlines()
     xValue = 0
     minValue = 0

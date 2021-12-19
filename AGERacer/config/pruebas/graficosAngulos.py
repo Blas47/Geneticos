@@ -8,7 +8,7 @@ fig, axes = plt.subplots(ncols = 4, figsize = (13, 3))
 
 for f, i in zip(files, range(len(color))):
     angulos1, angulos2, angulos3, angulos4 = [], [], [], []
-    file = open(f+'/log0-0.txt', "r")
+    file = open('config/pruebas/'+f+'/log0-0.txt', "r")
     file = file.readlines()
 
     for linea in file:
