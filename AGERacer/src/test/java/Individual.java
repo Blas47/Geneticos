@@ -19,9 +19,42 @@ public class Individual {
 
         // Set random values.
         for (int i = 0; i < sizeIndividual; i++) {
-            this.values[i] = Math.abs(Math.random() * 9000);
-            //Math.random()*6 + 1   // Esto da valores entre 1.0 y 7.0 excluido el 7.0
-            this.variances[i] = Math.random() * maxVarianza + minVarianza;
+            int max =0;
+            int min=0;
+            switch(i%3){
+            case 0: 
+                    max = 180;
+                    min=0;
+                    break;
+            case 1:
+                    max=10000;
+                    min=5000;
+                    break;
+            case 2:
+                    max=200;
+                    min=0;
+                    break;
+            }
+            this.values[i] = Math.abs(Math.random() * max + min);
+            this.variances[i] = Math.random() * maxVarianza + minVarianza;            
+        }
+        //oredenar ángulos
+        double[] aux = new double[this.values.length/3];
+        int counter = 0;
+        for (int i = 0; i < this.values.length; i++) {
+            if(i%3 == 0) {
+                aux[counter] = this.values[i];
+                counter++;
+            }
+        }
+
+        Arrays.sort(aux);
+        counter = 0;
+        for (int i = 0; i < this.values.length; i++) {
+            if(i%3 == 0) {
+                this.values[i] = aux[counter];
+                counter++;
+            }
         }
 
         changeFile(this.values, agente);
@@ -32,23 +65,32 @@ public class Individual {
     public Individual (double [] values, double[] variances, int agente) {
         // Same variances.
         this.values = Arrays.copyOf(values, values.length);
+        double[] auxValues = Arrays.copyOf(values, values.length);
         this.variances = Arrays.copyOf(variances, variances.length);
-
+        
         // Set new values.
         Random r = new Random();
-        for( int i = 0; i < this.values.length; i++){
-            this.values[i] += r.nextGaussian() * this.variances[i];
-            this.values[i] = Math.abs(this.values[i]);
+        for (int i = 0; i < this.values.length; i++) {
+            double suma = r.nextGaussian() * this.variances[i];
+            //AQUI
+            this.values[i] = Math.abs(this.values[i] + suma);
+            if(i%3 == 0) {
+                if (i != (this.values.length-3)) {
+                    double dif = (auxValues[i]%181) - (auxValues[i+3]%181);
+                    if (this.values[i] > auxValues[i+3]) {
+                        suma %= dif;
+                        this.values[i] = auxValues[i] + suma;
+                    }
+                }
+
+                if ((i != 0) && (this.values[i]%181 < this.values[i-3]%181)) {
+                    this.values[i] = auxValues[i];   
+                }                
+            }
         }
 
         changeFile(this.values, agente);
         this.fit = obtainFit(agente);
-    }
-
-    public Individual (Individual child) {
-        this.values = Arrays.copyOf(child.values, child.values.length);
-        this.variances = Arrays.copyOf(child.variances, child.variances.length);
-        this.fit = child.fit;
     }
 
     // Function to change the file of the agent.

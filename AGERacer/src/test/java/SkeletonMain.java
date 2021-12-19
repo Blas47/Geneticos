@@ -94,7 +94,7 @@ public class SkeletonMain {
         } catch(Exception e) {}
 
         // Veces que queremos correr los experimentos para evitar mínimos locales.
-        int nVeces = 2;
+        int nVeces = 1;
 
         // Peor valor de fit que se puede obtener.
         double bestFit = 1000;
